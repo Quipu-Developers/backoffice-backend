@@ -20,6 +20,7 @@
     "mysql2-cli": "^1.1.6",
     "passport": "^0.7.0",
     "passport-local": "^1.0.0",
+    "process": "^0.11.10",
     "sequelize": "^6.37.3"
   }
 }

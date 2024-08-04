@@ -9,7 +9,7 @@ const PORT = process.env.PORT || 3001;
 dotenv.config(); //process.env
 const passportConfig = require("./passport");
 passportConfig();
-const authRouter = require('./routes/auth');
+const loginRouter = require('./routes/login');
 const app = express();
 
 app.use(morgan("dev"));
@@ -25,10 +25,6 @@ sequelize
     })
     .then(() => {
         console.log("DB 동기화");
-        app.listen(PORT, () => {
-            console.log(`port:${PORT}`);
-            //console.log(`swagger: http://localhost:${PORT}/api-docs`);
-        });
     })
     .catch((err) => {
         console.error("DB 연결 실패:", err);
@@ -47,4 +43,9 @@ app.use(session({
 app.use(passport.initialize()); // req.user, req.login, req.isAuthenticate, req.logout
 app.use(passport.session()); //connect.id라는 이름으로 세션 쿠키가 브라우져로 전송
 
-app.use('./auth', authRouter);
+app.use('./login', loginRouter);
+
+app.listen(PORT, () => {
+    console.log(`port:${PORT}`);
+    //console.log(`swagger: http://localhost:${PORT}/api-docs`);
+});
