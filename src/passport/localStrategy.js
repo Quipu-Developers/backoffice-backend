@@ -1,15 +1,28 @@
-exports.localStrategy = (password, done) => {
-    const ADMIN_PASSWORDS = [
-        process.env.PASSWORD1,
-        process.env.PASSWORD2,
-        process.env.PASSWORD3,
-        process.env.PASSWORD4,
-        process.env.PASSWORD5,
-    ];
+const passport = require('passport');
+const bcrypt = require('bcrypt');
+const dotenv = require('dotenv');
+dotenv.config({path: '../.env'});
+const { Strategy: LocalStrategy } = require('passport-local');
 
-    if (ADMIN_PASSWORDS.includes(password)){
-        return done(null, {username: 'admin'});
-    } else {
-        return done(null, false, {message: 'Incorrect password'});
-    }
+module.exports = () => {
+    passport.use(new LocalStrategy({
+        usernameField: 'username', //req.body.username
+        passwordField: 'password', //req.body.password
+        passReqToCallback: false,
+    }, async (username, password, done) => {
+        try {
+            if (!process.env.PASSWORD) {
+                throw new Error('NO process.env.PASSWORD');
+            }
+            const result = await bcrypt.compare(password, process.env.PASSWORD)
+            if (result) {
+                done(null, {username: 'admin', password: `${password}`}); //user.username = 'admin'
+            } else {
+                done(null, false, {message: '비밀번호가 틀림'});
+            }
+        } catch(error){
+            console.log(error);
+            done(error);
+        }
+    }));
 };
