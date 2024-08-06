@@ -66,6 +66,125 @@
           }
         }
       }
+    },
+    "/data/joinquipu_general": {
+      "get": {
+        "summary": "joinquipu 데이터 베이스 조회",
+        "description": "general_member 테이블 조회",
+        "responses": {
+          "200": {
+            "description": "조회 성공",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "조회 성공"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "서버 에러",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "서버 에러"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/data/joinquipu_dev": {
+      "get": {
+        "summary": "joinquipu 데이터 베이스 조회",
+        "description": "dev_member 테이블 조회",
+        "responses": {
+          "200": {
+            "description": "조회 성공",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "조회 성공"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "서버 에러",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "서버 에러"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/data/joinquipu_dev_file": {
+      "post": {
+        "summary": "joinquipu 데이터 베이스 조회",
+        "description": "dev_member 포토폴리오 요청",
+        "requestBody": {
+          "required" : true,
+          "content" : {
+            "application/json":{
+              "schema":{
+                "type": "object",
+                "properties": {
+                  "filename": {
+                    "type": "string",
+                    "description": "파일 이름",
+                    "example": "퀴푸-[design]2020440102디자인.pdf"
+                  }
+                },
+                "required": ["filename"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "파일 전송 성공",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "파일이 성공적으로 전송되었습니다."
+                    },
+                    "file": {
+                      "type": "string",
+                      "format": "binary",
+                      "description": "전송된 PDF 파일"
+                    }
+                  }
+                }
+              },
+              "application/pdf": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "파일이 없음",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "파일이 없음"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   }
 }

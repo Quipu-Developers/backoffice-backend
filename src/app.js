@@ -6,12 +6,14 @@ const session = require("express-session");
 const dotenv = require("dotenv");
 const passport = require("passport");
 const PORT = process.env.PORT || 3001;
-dotenv.config(); //process.env
-const passportConfig = require("./passport");
+dotenv.config({path: '../src/.env'}); //process.env
+const passportConfig = require("../src/passport");
 passportConfig();
-const loginRouter = require('./routes/login');
+const loginRouter = require('../src/routes/login');
 const app = express();
-const { sequelize } = require('./models');
+const { sequelize } = require('../src/models');
+const dataRouter = require("../src/routes/data");
+
 app.use(morgan("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -39,17 +41,16 @@ sequelize.authenticate()
     .then(() => {
         console.log('DB 동기화');
         app.listen(PORT, () => {
-            console.log(`port:${PORT}`)
-            //console.log(`swagger: http://localhost:${PORT}/api-docs`);
-            console.log(`서버가 http://localhost:${PORT} 에서 실행 중입니다.`);
-
+            console.log(`swagger: http://localhost:${PORT}/api-docs`);
         });
     })
     .catch(err => {
         console.error('DB 연결 실패:', err);
     });
 
-app.use('/login', loginRouter);
+app.use('/auth', loginRouter);
+app.use('/data', dataRouter);
+
 app.use((err, req, res, next) => {
     console.error(err.stack || err);
     res.status(500).json({
