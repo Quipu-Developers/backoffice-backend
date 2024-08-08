@@ -21,19 +21,27 @@ const swaggerDocument = require("./swagger.json");
 app.use(morgan("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(cors({origin: true}));
-
 //cors
-app.options((req, res, next) => {
+app.use(cors({
+    origin: 'http://localhost:3000', // 클라이언트의 Origin
+    methods: ['GET', 'POST', 'OPTIONS'],
+    credentials: true, // 쿠키를 포함한 요청을 허용}));
+}));
+/*
+app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
     res.setHeader('Access-Control-Allow-Credentials', 'true');
+
+    // Handle preflight requests
     if (req.method === 'OPTIONS') {
-        return res.sendStatus(200); // preflight 요청에 대한 응답
+        return res.sendStatus(200); // Preflight 요청에 대한 응답
     }
     next();
 });
+ */
+
 
 app.use(cookieParser(process.env.COOKIE_SECRET));
 app.use(session({
