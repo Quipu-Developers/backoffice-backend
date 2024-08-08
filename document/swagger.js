@@ -12,6 +12,8 @@ passportConfig();
 const loginRouter = require('../src/routes/login');
 const app = express();
 const { sequelize } = require('../src/models');
+const swaggerUi = require("swagger-ui-express");
+const swaggerDocument = require("./swagger.json");
 const dataRouter = require("../src/routes/data");
 
 app.use(morgan("dev"));
@@ -50,6 +52,7 @@ sequelize.authenticate()
 
 app.use('/auth', loginRouter);
 app.use('/data', dataRouter);
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.use((err, req, res, next) => {
     console.error(err.stack || err);
