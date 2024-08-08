@@ -6,7 +6,8 @@ const session = require("express-session");
 const dotenv = require("dotenv");
 const passport = require("passport");
 const PORT = process.env.PORT || 3001;
-dotenv.config({path: '../src/.env'}); //process.env
+dotenv.config({path: '../.env'});
+//dotenv.config({path: '../.env'}); //process.env
 const passportConfig = require("../src/passport");
 passportConfig();
 const loginRouter = require('../src/routes/login');
@@ -36,12 +37,12 @@ sequelize.authenticate()
     .then(() => {
         console.log('DB 연결');
         return sequelize.sync({});
-        //return sequelize.sync({ });
     })
     .then(() => {
         console.log('DB 동기화');
         app.listen(PORT, () => {
-            console.log(`swagger: http://localhost:${PORT}/api-docs`);
+            console.log(process.env.COOKIE_SECRET);
+            console.log(`http://localhost:${PORT}`);
         });
     })
     .catch(err => {
