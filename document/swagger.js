@@ -9,16 +9,19 @@ const PORT = process.env.PORT || 3001;
 dotenv.config({path: '../.env'}); //process.env
 const passportConfig = require("../src/passport");
 passportConfig();
+const cors = require("cors");
 const loginRouter = require('../src/routes/login');
+const dataRouter = require("../src/routes/data");
 const app = express();
 const { sequelize } = require('../src/models');
 const swaggerUi = require("swagger-ui-express");
 const swaggerDocument = require("./swagger.json");
-const dataRouter = require("../src/routes/data");
+
 
 app.use(morgan("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+app.use(cors({origin: true}));
 
 //cors
 app.options((req, res, next) => {

@@ -10,16 +10,19 @@ dotenv.config({path: '../.env'});
 //dotenv.config({path: '../.env'}); //process.env
 const passportConfig = require("../src/passport");
 passportConfig();
+const cors = require("cors");
 const loginRouter = require('../src/routes/login');
+const dataRouter = require("../src/routes/data");
 const app = express();
 const { sequelize } = require('../src/models');
-const dataRouter = require("../src/routes/data");
+
 
 app.use(morgan("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 //cors
+app.use(cors({ origin: 'http://localhost:3000'}));
 app.options((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
