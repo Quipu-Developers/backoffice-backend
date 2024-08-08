@@ -6,7 +6,7 @@ const session = require("express-session");
 const dotenv = require("dotenv");
 const passport = require("passport");
 const PORT = process.env.PORT || 3001;
-dotenv.config({path: '../src/.env'}); //process.env
+dotenv.config({path: '../.env'}); //process.env
 const passportConfig = require("../src/passport");
 passportConfig();
 const loginRouter = require('../src/routes/login');
