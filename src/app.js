@@ -19,6 +19,18 @@ app.use(morgan("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
+//cors
+app.options((req, res, next) => {
+    res.setHeader('Access-Control-Allow-Origin', 'https://quipu.uos.ac.kr');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+    res.setHeader('Access-Control-Allow-Credentials', 'true');
+    if (req.method === 'OPTIONS') {
+        return res.sendStatus(200); // preflight 요청에 대한 응답
+    }
+    next();
+});
+
 app.use(cookieParser(process.env.COOKIE_SECRET));
 app.use(session({
     resave: false,
