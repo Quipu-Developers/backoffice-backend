@@ -19,3 +19,12 @@ exports.login = (req, res, next) => {
         })
     })(req, res, next);
 }
+
+exports.logout = (req, res) => {
+    req.logout((err) => {
+        if (err) {
+            return res.status(500).json({ message: '로그아웃 처리 중 오류 발생' });
+        }
+        res.status(200).json({ message: '로그아웃 성공' });
+    });
+};
