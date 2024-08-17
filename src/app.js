@@ -5,7 +5,7 @@ const path = require("path");
 const session = require("express-session");
 const dotenv = require("dotenv");
 const passport = require("passport");
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 3002;
 dotenv.config({path: '../.env'});
 //dotenv.config({path: '../.env'}); //process.env
 const passportConfig = require("../src/passport");
@@ -72,8 +72,8 @@ sequelize.authenticate()
         console.error('DB 연결 실패:', err);
     });
 
-app.use('/auth', loginRouter);
-app.use('/data', dataRouter);
+app.use('/bo/auth', loginRouter);
+app.use('/bo/data', dataRouter);
 
 app.use((err, req, res, next) => {
     console.error(err.stack || err);

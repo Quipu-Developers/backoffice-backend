@@ -6,7 +6,7 @@
     "description": "quipu forum API용 Swagger"
   },
   "paths": {
-    "/auth/login": {
+    "/bo/auth/login": {
       "post": {
         "summary": "로그인",
         "description": "BO에 로그인",
@@ -67,7 +67,7 @@
         }
       }
     },
-    "/data/joinquipu_general": {
+    "/bo/data/joinquipu_general": {
       "get": {
         "summary": "joinquipu 데이터 베이스 조회",
         "description": "general_member 테이블 조회",
@@ -123,7 +123,7 @@
         }
       }
     },
-    "/data/joinquipu_dev_file": {
+    "/bo/data/joinquipu_dev_file": {
       "post": {
         "summary": "joinquipu 데이터 베이스 조회",
         "description": "dev_member 포토폴리오 요청",
