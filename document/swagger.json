@@ -95,7 +95,7 @@
         }
       }
     },
-    "/data/joinquipu_dev": {
+    "/bo/data/joinquipu_dev": {
       "get": {
         "summary": "joinquipu 데이터 베이스 조회",
         "description": "dev_member 테이블 조회",

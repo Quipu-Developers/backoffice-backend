@@ -73,8 +73,8 @@ sequelize.authenticate()
         console.error('DB 연결 실패:', err);
     });
 
-app.use('/auth', loginRouter);
-app.use('/data', dataRouter);
+app.use('/bo/auth', loginRouter);
+app.use('/bo/data', dataRouter);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.use((err, req, res, next) => {

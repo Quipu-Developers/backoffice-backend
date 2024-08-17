@@ -64,7 +64,6 @@ sequelize.authenticate()
     .then(() => {
         console.log('DB 동기화');
         app.listen(PORT, () => {
-            console.log(process.env.COOKIE_SECRET);
             console.log(`http://localhost:${PORT}`);
         });
     })
