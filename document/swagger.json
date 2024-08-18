@@ -69,7 +69,7 @@
     },
     "/bo/data/joinquipu_general": {
       "get": {
-        "summary": "joinquipu 데이터 베이스 조회",
+        "summary": "동아리 신청 인원 조회",
         "description": "general_member 테이블 조회",
         "responses": {
           "200": {
@@ -97,7 +97,7 @@
     },
     "/bo/data/joinquipu_dev": {
       "get": {
-        "summary": "joinquipu 데이터 베이스 조회",
+        "summary": "동아리 신청 인원 조회",
         "description": "dev_member 테이블 조회",
         "responses": {
           "200": {
@@ -125,7 +125,7 @@
     },
     "/bo/data/joinquipu_dev_file": {
       "post": {
-        "summary": "joinquipu 데이터 베이스 조회",
+        "summary": "개발팀 지원자 포토폴리오 열람",
         "description": "dev_member 포토폴리오 요청",
         "requestBody": {
           "required" : true,
