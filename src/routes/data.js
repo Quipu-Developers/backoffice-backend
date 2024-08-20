@@ -11,7 +11,7 @@ const router = express.Router();
 router.get('/joinquipu_general', isLoggedIn, getData(General_member));
 router.get('/joinquipu_dev', isLoggedIn, getData(Dev_member));
 
-// POST /data/joinqupiu_dev_file
+// GET /data/joinqupiu_dev_file
 router.get('/joinquipu_dev_file/:filename', isLoggedIn, getFile);
 
 
