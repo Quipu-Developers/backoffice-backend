@@ -28,7 +28,10 @@
                     "example": "quipuadmin0316@!"
                   }
                 },
-                "required": ["username", "password"]
+                "required": [
+                  "username",
+                  "password"
+                ]
               }
             }
           }
@@ -123,32 +126,33 @@
         }
       }
     },
-    "/bo/data/joinquipu_dev_file": {
-      "post": {
+    "/bo/data/joinquipu_dev_file/{filename}": {
+      "get": {
         "summary": "개발팀 지원자 포토폴리오 열람",
         "description": "dev_member 포토폴리오 요청",
-        "requestBody": {
-          "required" : true,
-          "content" : {
-            "application/json":{
-              "schema":{
-                "type": "object",
-                "properties": {
-                  "filename": {
-                    "type": "string",
-                    "description": "파일 이름",
-                    "example": "퀴푸-[design]2020440102디자인.pdf"
-                  }
-                },
-                "required": ["filename"]
-              }
+        "parameters": [
+          {
+            "name": "filename",
+            "in": "path",
+            "required": true,
+            "description": "파일 이름",
+            "schema": {
+              "type": "string",
+              "example": "퀴푸-[design]2020440102디자인.pdf"
             }
           }
-        },
+        ],
         "responses": {
           "200": {
             "description": "파일 전송 성공",
             "content": {
+              "application/pdf": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary",
+                  "description": "전송된 PDF 파일"
+                }
+              },
               "application/json": {
                 "schema": {
                   "type": "object",
@@ -164,12 +168,6 @@
                     }
                   }
                 }
-              },
-              "application/pdf": {
-                "schema": {
-                  "type": "string",
-                  "format": "binary"
-                }
               }
             }
           },
@@ -179,6 +177,16 @@
               "application/json": {
                 "example": {
                   "message": "파일이 없음"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "서버 에러",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "서버 에러"
                 }
               }
             }

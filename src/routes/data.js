@@ -12,7 +12,7 @@ router.get('/joinquipu_general', isLoggedIn, getData(General_member));
 router.get('/joinquipu_dev', isLoggedIn, getData(Dev_member));
 
 // POST /data/joinqupiu_dev_file
-router.post('/joinquipu_dev_file', isLoggedIn, getFile);
+router.get('/joinquipu_dev_file/:filename', isLoggedIn, getFile);
 
 
 module.exports = router;

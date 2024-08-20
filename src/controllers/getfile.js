@@ -1,8 +1,7 @@
 const path = require('path');
 
 const getFile_dev_member = async(req, res) => {
-    console.log(req.body);
-    const filename = req.body.filename;
+    const filename = req.params.filename;
     if(!filename){
         res.status(400).send('file 이름이 필요');
     }
