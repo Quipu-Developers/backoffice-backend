@@ -16,32 +16,17 @@ const dataRouter = require("../src/routes/data");
 const app = express();
 const { sequelize } = require('../src/models');
 
-
-app.use(morgan("dev"));
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-
 //cors
 app.use(cors({
     origin: 'http://localhost:3000', // 클라이언트의 Origin
     methods: ['GET', 'POST', 'OPTIONS'],
     credentials: true, // 쿠키를 포함한 요청을 허용}));
 }));
-//cors
-/*
-app.use((req, res, next) => {
-    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-    res.setHeader('Access-Control-Allow-Credentials', 'true');
+app.use(morgan("combined"));
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
 
-    // Handle preflight requests
-    if (req.method === 'OPTIONS') {
-        return res.sendStatus(200); // Preflight 요청에 대한 응답
-    }
-    next();
-});
- */
+
 app.use(cookieParser(process.env.COOKIE_SECRET));
 app.use(session({
     resave: false,
@@ -63,6 +48,16 @@ sequelize.authenticate()
     })
     .then(() => {
         console.log('DB 동기화');
+        // 주기적으로 DB 연결 상태 유지
+        setInterval(() => {
+            sequelize.query('SELECT 1')
+                .then(() => {
+                    console.log('SELECT 1 query executed successfully');
+                })
+                .catch(err => {
+                    console.error('Error executing SELECT 1 query:', err);
+                });
+        }, 3600000); // 1시간(밀리초 단위)
         app.listen(PORT, () => {
             console.log(`http://localhost:${PORT}`);
         });
