@@ -5,6 +5,9 @@ const path = require("path");
 const session = require("express-session");
 const dotenv = require("dotenv");
 const passport = require("passport");
+const helmet = require("helmet");
+const hpp = require("hpp");
+const NODE_ENV = process.env.NODE_ENV || "development";
 const PORT = process.env.PORT || 3002;
 dotenv.config({path: '../.env'});
 //dotenv.config({path: '../.env'}); //process.env
@@ -16,29 +19,51 @@ const dataRouter = require("../src/routes/data");
 const app = express();
 const { sequelize } = require('../src/models');
 
-//cors
-app.use(cors({
-    origin: 'http://localhost:3000', // 클라이언트의 Origin
-    methods: ['GET', 'POST', 'OPTIONS'],
-    credentials: true, // 쿠키를 포함한 요청을 허용}));
-}));
-app.use(morgan("combined"));
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-
-
-app.use(cookieParser(process.env.COOKIE_SECRET));
-app.use(session({
+const sessionOption = {
     resave: false,
     saveUninitialized: false,
     secret: process.env.COOKIE_SECRET,
     cookie: {
-        httpOnly: true,
+        maxAge: 1000 * 60 * 60,
+        httpOnly: false,
         secure: false, //개발 시에만 false로(http, https 모두 가능)
     }
-}));
+};
+if (process.env.NODE_ENV === "production") {
+    sessionOption.proxy = true;
+    sessionOption.cookie.httpOnly = true;
+    sessionOption.cookie.secure = true;
+    sessionOption.cookie.sameSite = 'None';
+}
+
+
+app.use(cookieParser(process.env.COOKIE_SECRET));
+app.use(session(sessionOption));
 app.use(passport.initialize()); // req.user, req.login, req.isAuthenticate, req.logout
 app.use(passport.session()); //connect.id라는 이름으로 세션 쿠키가 브라우져로 전송
+
+app.use(express.json());
+if (process.env.NODE_ENV === 'development') {
+    app.use(morgan("dev"));
+    app.use(express.urlencoded({ extended: false }));
+    app.use(cors({
+        origin: 'http://localhost:3000', // 클라이언트의 Origin
+        methods: ['GET', 'POST', 'OPTIONS'],
+        credentials: true, // 쿠키를 포함한 요청을 허용}));
+    }));
+} else if (process.env.NODE_ENV === 'production') {
+    app.enable('trust proxy');
+    app.use(morgan("combined"));
+    app.use(hpp());
+    app.use(express.urlencoded({ extended: true }));
+    app.use(cors({
+        origin: process.env.CLIENT_ORIGIN, // 클라이언트의 Origin
+        methods: ['GET', 'POST', 'OPTIONS'],
+        credentials: true, // 쿠키를 포함한 요청을 허용}));
+    }));
+}
+
+
 
 
 sequelize.authenticate()
